@@ -1,0 +1,158 @@
+<div class="dashboard-luxury">
+
+  <div class="hero-banner">
+
+    <div class="hero-info">
+      <span class="welcome-text">Bienvenue</span>
+
+      <h1>
+        Admin ♕
+      </h1>
+
+      <p *ngIf="currentUser$ | async as user">
+        Gérez votre salon avec élégance, {{ user.first_name || user.username }}
+      </p>
+    </div>
+    
+    <div class="hero-image">
+      <img src="assets/images/banner-beauty.jpeg" alt="Darling Beauty">
+    </div>
+
+    </div>
+      <div class="hero-quote">
+      <p>
+        MAKE HEADS TURN
+        <br>
+        WITH ICONIC LOOKS
+      </p>
+
+      <span>Darling Beauty</span>
+   </div>
+
+  <div class="stats-grid">
+
+    <div class="stat-card">
+      <i class="bi bi-calendar-check"></i>
+      <div>
+        <h2>{{ stats.aujourd_hui }}</h2>
+        <span>RDV Aujourd'hui</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <i class="bi bi-calendar-month"></i>
+      <div>
+        <h2>{{ stats.ce_mois }}</h2>
+        <span>RDV ce mois</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <i class="bi bi-people"></i>
+      <div>
+        <h2>{{ totalClients }}</h2>
+        <span>Clients</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <i class="bi bi-bag"></i>
+      <div>
+        <h2>{{ prodStockBas }}</h2>
+        <span>Stock faible</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="appointments-card">
+
+    <div class="section-header">
+      <h2>Rendez-vous du jour</h2>
+    </div>
+
+    <div *ngIf="loading" class="loading">
+      Chargement...
+    </div>
+
+    <table *ngIf="!loading && rdvAujourdHui.length > 0">
+
+      <thead>
+        <tr>
+          <th>Heure</th>
+          <th>Client</th>
+          <th>Service</th>
+          <th>Prix</th>
+          <th>Statut</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let rdv of rdvAujourdHui">
+
+          <td>{{ rdv.date_heure | date:'HH:mm' }}</td>
+          <td>{{ rdv.client_nom }}</td>
+          <td>{{ rdv.service_nom }}</td>
+          <td>{{ rdv.prix_applique }} FCFA</td>
+
+          <td>
+            <span [class]="getBadgeClass(rdv.statut!)">
+              {{ STATUT_LABELS[rdv.statut!] }}
+            </span>
+          </td>
+
+        </tr>
+      </tbody>
+
+    </table>
+
+  </div>
+  <div class="cards-row">
+
+  <div class="luxury-card">
+    <div class="section-header">
+      <h2>Services populaires</h2>
+    </div>
+
+    <div class="items-grid">
+      <div class="item-card" *ngFor="let service of services">
+
+        <img
+          src="assets/images/service-default.jpg"
+          alt="service">
+
+        <h4>{{ service.nom }}</h4>
+
+        <p>
+          {{ service.prix }} FCFA
+        </p>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="luxury-card">
+    <div class="section-header">
+      <h2>Produits</h2>
+    </div>
+
+    <div class="items-grid">
+      <div class="item-card" *ngFor="let produit of produits">
+
+        <img
+          src="assets/images/product-default.jpg"
+          alt="produit">
+
+        <h4>{{ produit.nom }}</h4>
+
+        <p>
+          {{ produit.prix }} FCFA
+        </p>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</div>

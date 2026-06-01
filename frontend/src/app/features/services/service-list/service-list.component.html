@@ -1,0 +1,67 @@
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Services</h1>
+    <p class="page-subtitle">Prestations proposées par Darling Beauty</p>
+  </div>
+  <a routerLink="/services/new" class="btn-primary">
+    <i class="bi bi-plus-lg"></i> Nouveau service
+  </a>
+</div>
+
+<div class="alert alert-success" *ngIf="success"><i class="bi bi-check-circle"></i> {{ success }}</div>
+<div class="alert alert-danger" *ngIf="error"><i class="bi bi-exclamation-circle"></i> {{ error }}</div>
+
+<div class="card">
+  <div class="spinner-wrapper" *ngIf="loading"><div class="spinner"></div></div>
+
+  <div class="empty-state" *ngIf="!loading && services.length === 0">
+    <i class="bi bi-scissors"></i>
+    <p>Aucun service enregistré.</p>
+  </div>
+
+  <div class="table-wrapper" *ngIf="!loading && services.length > 0">
+    <table>
+      <thead>
+        <tr>
+          <th>Service</th>
+          <th>Catégorie</th>
+          <th>Durée</th>
+          <th>Prix</th>
+          <th>Statut</th>
+          <th class="text-right">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let s of services">
+          <td class="fw-600">{{ s.nom }}</td>
+          <td>{{ s.categorie_nom || '—' }}</td>
+          <td>{{ s.duree_minutes }} min</td>
+          <td>{{ s.prix | number }} FCFA</td>
+          <td>
+            <span [class]="s.actif ? 'badge badge-success' : 'badge badge-secondary'">
+              {{ s.actif ? 'Actif' : 'Inactif' }}
+            </span>
+          </td>
+          <td class="text-right">
+            <a [routerLink]="['/services', s.id, 'edit']" class="btn-icon edit"><i class="bi bi-pencil"></i></a>
+            <button class="btn-icon delete" (click)="confirmDelete(s.id!)"><i class="bi bi-trash"></i></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="modal-backdrop" *ngIf="deleteConfirmId">
+  <div class="modal-box" style="max-width: 420px;">
+    <div class="modal-header">
+      <h3>Confirmer la suppression</h3>
+      <button class="btn-close" (click)="cancelDelete()">✕</button>
+    </div>
+    <div class="modal-body"><p>Supprimer ce service définitivement ?</p></div>
+    <div class="modal-footer">
+      <button class="btn-secondary" (click)="cancelDelete()">Annuler</button>
+      <button class="btn-danger" (click)="delete(deleteConfirmId!)"><i class="bi bi-trash"></i> Supprimer</button>
+    </div>
+  </div>
+</div>

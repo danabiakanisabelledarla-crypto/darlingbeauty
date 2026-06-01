@@ -1,0 +1,180 @@
+.dashboard-luxury{
+  background: #050505;
+  color: white;
+}
+
+// App component styles are handled globally in styles.scss
+
+body,
+html {
+  background: #050505;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+}
+
+.app-wrapper {
+  background: #050505;
+  min-height: 100vh;
+}
+
+.main-content {
+    flex: 1;
+    width: calc(100% - 240px);
+  background: #050505;
+}
+
+.page-content {
+  background: #050505;
+  padding: 25px;
+}
+
+/* side bar */
+.sidebar{
+  position:relative;
+
+  background:#050505;
+
+  overflow:hidden;
+  width:240px !important;
+  min-width:240px !important;
+  max-width:240px !important;
+  flex:none !important;
+}
+
+.sidebar::before{
+  content:'';
+
+  position:absolute;
+
+  width:350px;
+  height:350px;
+
+  border:2px solid rgba(212,175,55,.2);
+
+  border-radius:50%;
+
+  left:-220px;
+  top:50px;
+}
+
+.sidebar::after{
+  content:'';
+
+  position:absolute;
+
+  width:300px;
+  height:300px;
+
+  border:2px solid rgba(212,175,55,.15);
+
+  border-radius:50%;
+
+  left:-180px;
+  bottom:40px;
+}
+
+.sidebar-brand {
+  padding: 30px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.brand-name {
+  color: #d4a44b;
+  font-size: 28px;
+  font-family: "Playfair Display", serif;
+  font-weight: 600;
+}
+
+.brand-sub {
+  color: rgba(255,255,255,.6);
+  font-style: italic;
+}
+
+.nav-item {
+  color: rgba(255,255,255,.8);
+  margin: 8px 15px;
+  border-radius: 14px;
+}
+
+.nav-item:hover {
+  background: rgba(255,255,255,.05);
+}
+
+.nav-item.active {
+  background: linear-gradient(
+      135deg,
+      #7f002e,
+      #d4145a
+  );
+
+  color: white;
+}
+/* banniere principale */
+
+.hero-banner {
+  position: relative;
+  height: 320px;
+
+  background: linear-gradient(
+      rgba(0,0,0,.6),
+      rgba(0,0,0,.7)
+    ),
+    url('/assets/images/banner-beauty.jpeg');
+
+  background-size: cover;
+  background-position: center;
+
+  border-radius: 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  overflow: hidden;
+  margin-bottom: 30px;
+  padding: 40px;
+}
+// partie gauche de la banniere
+.hero-left {
+  z-index: 2;
+}
+
+.hero-subtitle {
+  color: #d4a44b;
+  font-size: 30px;
+  font-style: italic;
+  font-family: "Playfair Display", serif;
+}
+
+.hero-left h2 {
+  font-size: 60px;
+  margin: 0;
+  font-family: "Playfair Display", serif;
+}
+
+.hero-left p {
+  color: rgba(255,255,255,.8);
+  font-size: 18px;
+}
+.sidebar-brand{
+  text-align:center;
+  padding:30px 20px;
+}
+
+.sidebar-logo{
+  width:90px;
+  margin-bottom:10px;
+}
+
+.sidebar-title{
+  font-family:"Playfair Display", serif;
+
+  color:#d4af37;
+
+  font-size:22px;
+
+  letter-spacing:2px;
+
+  line-height:1.1;
+}

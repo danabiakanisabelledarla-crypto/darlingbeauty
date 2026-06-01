@@ -1,0 +1,71 @@
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Produits</h1>
+    <p class="page-subtitle">Stock et produits de beauté</p>
+  </div>
+  <a routerLink="/products/new" class="btn-primary">
+    <i class="bi bi-plus-lg"></i> Nouveau produit
+  </a>
+</div>
+
+<div class="alert alert-success" *ngIf="success"><i class="bi bi-check-circle"></i> {{ success }}</div>
+<div class="alert alert-danger"  *ngIf="error"><i class="bi bi-exclamation-circle"></i> {{ error }}</div>
+
+<div class="card">
+  <div class="spinner-wrapper" *ngIf="loading"><div class="spinner"></div></div>
+
+  <div class="empty-state" *ngIf="!loading && products.length === 0">
+    <i class="bi bi-bag"></i>
+    <p>Aucun produit enregistré.</p>
+  </div>
+
+  <div class="table-wrapper" *ngIf="!loading && products.length > 0">
+    <table>
+      <thead>
+        <tr>
+          <th>Produit</th>
+          <th>Marque</th>
+          <th>Prix achat</th>
+          <th>Prix vente</th>
+          <th>Stock</th>
+          <th>Statut stock</th>
+          <th class="text-right">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of products">
+          <td class="fw-600">{{ p.nom }}</td>
+          <td>{{ p.marque || '—' }}</td>
+          <td>{{ p.prix_achat | number }} FCFA</td>
+          <td>{{ p.prix_vente | number }} FCFA</td>
+          <td class="fw-600" [style.color]="p.stock_bas ? 'var(--danger)' : 'var(--success)'">
+            {{ p.stock }}
+          </td>
+          <td>
+            <span [class]="p.stock_bas ? 'badge badge-danger' : 'badge badge-success'">
+              {{ p.stock_bas ? '⚠ Stock bas' : 'OK' }}
+            </span>
+          </td>
+          <td class="text-right">
+            <a [routerLink]="['/products', p.id, 'edit']" class="btn-icon edit"><i class="bi bi-pencil"></i></a>
+            <button class="btn-icon delete" (click)="confirmDelete(p.id!)"><i class="bi bi-trash"></i></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="modal-backdrop" *ngIf="deleteConfirmId">
+  <div class="modal-box" style="max-width:420px;">
+    <div class="modal-header">
+      <h3>Supprimer le produit</h3>
+      <button class="btn-close" (click)="cancelDelete()">✕</button>
+    </div>
+    <div class="modal-body"><p>Supprimer ce produit définitivement ?</p></div>
+    <div class="modal-footer">
+      <button class="btn-secondary" (click)="cancelDelete()">Annuler</button>
+      <button class="btn-danger" (click)="delete(deleteConfirmId!)"><i class="bi bi-trash"></i> Supprimer</button>
+    </div>
+  </div>
+</div>

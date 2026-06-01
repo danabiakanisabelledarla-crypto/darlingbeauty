@@ -1,0 +1,57 @@
+<div class="page-header">
+  <div>
+    <h1 class="page-title">{{ isEdit ? 'Modifier le service' : 'Nouveau service' }}</h1>
+  </div>
+  <a routerLink="/services" class="btn-secondary"><i class="bi bi-arrow-left"></i> Retour</a>
+</div>
+
+<div class="spinner-wrapper" *ngIf="loadingData"><div class="spinner"></div></div>
+
+<div class="card" *ngIf="!loadingData">
+  <div class="alert alert-danger" *ngIf="error"><i class="bi bi-exclamation-circle"></i> {{ error }}</div>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label>Nom du service *</label>
+      <input type="text" class="form-control" [class.is-invalid]="f['nom'].invalid && f['nom'].touched"
+             formControlName="nom" placeholder="Ex: Coiffure mariée, Manucure french...">
+      <div class="invalid-feedback" *ngIf="f['nom'].errors?.['required'] && f['nom'].touched">Requis</div>
+    </div>
+
+    <div class="form-group">
+      <label>Catégorie</label>
+      <select class="form-control" formControlName="categorie">
+        <option [value]="null">— Sans catégorie —</option>
+        <option *ngFor="let cat of categories" [value]="cat.id">{{ cat.nom }}</option>
+      </select>
+    </div>
+
+    <div class="grid-2">
+      <div class="form-group">
+        <label>Durée (minutes) *</label>
+        <input type="number" class="form-control" [class.is-invalid]="f['duree_minutes'].invalid && f['duree_minutes'].touched"
+               formControlName="duree_minutes" placeholder="30" min="5" max="480">
+        <div class="invalid-feedback" *ngIf="f['duree_minutes'].errors && f['duree_minutes'].touched">Entre 5 et 480 minutes</div>
+      </div>
+      <div class="form-group">
+        <label>Prix (FCFA) *</label>
+        <input type="number" class="form-control" [class.is-invalid]="f['prix'].invalid && f['prix'].touched"
+               formControlName="prix" placeholder="5000" min="1">
+        <div class="invalid-feedback" *ngIf="f['prix'].errors?.['min'] && f['prix'].touched">Le prix doit être > 0</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Description</label>
+      <textarea class="form-control" formControlName="description" rows="3" placeholder="Description du service..."></textarea>
+    </div>
+
+    <div class="form-actions">
+      <a routerLink="/services" class="btn-secondary">Annuler</a>
+      <button type="submit" class="btn-primary" [disabled]="loading">
+        <i class="bi bi-check-lg" *ngIf="!loading"></i>
+        {{ loading ? 'Sauvegarde...' : (isEdit ? 'Mettre à jour' : 'Enregistrer') }}
+      </button>
+    </div>
+  </form>
+</div>

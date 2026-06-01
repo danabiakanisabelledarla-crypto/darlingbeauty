@@ -1,0 +1,70 @@
+<div class="page-header">
+  <div>
+    <h1 class="page-title">{{ isEdit ? 'Modifier le produit' : 'Nouveau produit' }}</h1>
+  </div>
+  <a routerLink="/products" class="btn-secondary"><i class="bi bi-arrow-left"></i> Retour</a>
+</div>
+
+<div class="spinner-wrapper" *ngIf="loadingData"><div class="spinner"></div></div>
+
+<div class="card" *ngIf="!loadingData">
+  <div class="alert alert-danger" *ngIf="error"><i class="bi bi-exclamation-circle"></i> {{ error }}</div>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="grid-2">
+      <div class="form-group">
+        <label>Nom du produit *</label>
+        <input type="text" class="form-control"
+               [class.is-invalid]="f['nom'].invalid && f['nom'].touched"
+               formControlName="nom" placeholder="Ex: Huile de coco, Laque cheveux...">
+        <div class="invalid-feedback" *ngIf="f['nom'].errors?.['required'] && f['nom'].touched">Requis</div>
+      </div>
+      <div class="form-group">
+        <label>Marque</label>
+        <input type="text" class="form-control" formControlName="marque" placeholder="Ex: L'Oréal, Wella...">
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="form-group">
+        <label>Prix d'achat (FCFA) *</label>
+        <input type="number" class="form-control"
+               [class.is-invalid]="f['prix_achat'].invalid && f['prix_achat'].touched"
+               formControlName="prix_achat" placeholder="0" min="0">
+        <div class="invalid-feedback" *ngIf="f['prix_achat'].errors?.['min'] && f['prix_achat'].touched">Ne peut pas être négatif</div>
+      </div>
+      <div class="form-group">
+        <label>Prix de vente (FCFA) *</label>
+        <input type="number" class="form-control"
+               [class.is-invalid]="f['prix_vente'].invalid && f['prix_vente'].touched"
+               formControlName="prix_vente" placeholder="0" min="1">
+        <div class="invalid-feedback" *ngIf="f['prix_vente'].errors?.['min'] && f['prix_vente'].touched">Doit être supérieur à 0</div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="form-group">
+        <label>Stock actuel *</label>
+        <input type="number" class="form-control" formControlName="stock" placeholder="0" min="0">
+      </div>
+      <div class="form-group">
+        <label>Seuil alerte stock bas *</label>
+        <input type="number" class="form-control" formControlName="stock_minimum" placeholder="5" min="0">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Description</label>
+      <textarea class="form-control" formControlName="description" rows="3"
+                placeholder="Description du produit..."></textarea>
+    </div>
+
+    <div class="form-actions">
+      <a routerLink="/products" class="btn-secondary">Annuler</a>
+      <button type="submit" class="btn-primary" [disabled]="loading">
+        <i class="bi bi-check-lg" *ngIf="!loading"></i>
+        {{ loading ? 'Sauvegarde...' : (isEdit ? 'Mettre à jour' : 'Enregistrer') }}
+      </button>
+    </div>
+  </form>
+</div>

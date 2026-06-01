@@ -1,0 +1,74 @@
+<div class="page-header">
+  <div>
+    <h1 class="page-title">{{ isEdit ? 'Modifier le rendez-vous' : 'Nouveau rendez-vous' }}</h1>
+    <p class="page-subtitle">{{ isEdit ? 'Mettez à jour les informations' : 'Planifiez une prestation' }}</p>
+  </div>
+  <a routerLink="/appointments" class="btn-secondary"><i class="bi bi-arrow-left"></i> Retour</a>
+</div>
+
+<div class="spinner-wrapper" *ngIf="loadingData"><div class="spinner"></div></div>
+
+<div class="card" *ngIf="!loadingData">
+  <div class="alert alert-danger" *ngIf="error"><i class="bi bi-exclamation-circle"></i> {{ error }}</div>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="grid-2">
+      <div class="form-group">
+        <label>Client *</label>
+        <select class="form-control" [class.is-invalid]="f['client'].invalid && f['client'].touched"
+                formControlName="client">
+          <option [value]="null">— Sélectionner un client —</option>
+          <option *ngFor="let c of clients" [value]="c.id">{{ c.prenom }} {{ c.nom }}</option>
+        </select>
+        <div class="invalid-feedback" *ngIf="f['client'].errors?.['required'] && f['client'].touched">Requis</div>
+      </div>
+
+      <div class="form-group">
+        <label>Service *</label>
+        <select class="form-control" [class.is-invalid]="f['service'].invalid && f['service'].touched"
+                formControlName="service">
+          <option [value]="null">— Sélectionner un service —</option>
+          <option *ngFor="let s of services" [value]="s.id">{{ s.nom }} ({{ s.duree_minutes }} min — {{ s.prix | number }} FCFA)</option>
+        </select>
+        <div class="invalid-feedback" *ngIf="f['service'].errors?.['required'] && f['service'].touched">Requis</div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="form-group">
+        <label>Date et heure *</label>
+        <input type="datetime-local" class="form-control"
+               [class.is-invalid]="f['date_heure'].invalid && f['date_heure'].touched"
+               formControlName="date_heure">
+        <div class="invalid-feedback" *ngIf="f['date_heure'].errors?.['required'] && f['date_heure'].touched">Requis</div>
+      </div>
+
+      <div class="form-group">
+        <label>Prix appliqué (FCFA)</label>
+        <input type="number" class="form-control" formControlName="prix_applique"
+               placeholder="Laissez vide pour utiliser le prix du service" min="0">
+      </div>
+    </div>
+
+    <div class="form-group" *ngIf="isEdit">
+      <label>Statut</label>
+      <select class="form-control" formControlName="statut">
+        <option *ngFor="let s of statutOptions" [value]="s.value">{{ s.label }}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Notes</label>
+      <textarea class="form-control" formControlName="notes" rows="3"
+                placeholder="Notes sur le rendez-vous..."></textarea>
+    </div>
+
+    <div class="form-actions">
+      <a routerLink="/appointments" class="btn-secondary">Annuler</a>
+      <button type="submit" class="btn-primary" [disabled]="loading">
+        <i class="bi bi-check-lg" *ngIf="!loading"></i>
+        {{ loading ? 'Sauvegarde...' : (isEdit ? 'Mettre à jour' : 'Enregistrer') }}
+      </button>
+    </div>
+  </form>
+</div>

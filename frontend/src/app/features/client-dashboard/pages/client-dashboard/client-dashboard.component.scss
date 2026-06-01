@@ -1,0 +1,116 @@
+.client-dashboard {
+  min-height: 100vh;
+  background: #faf7f8;
+}
+
+.hero-section {
+  position: relative;
+  height: 420px;
+
+  background-image: url('https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9');
+  background-size: cover;
+  background-position: center;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: white;
+  max-width: 700px;
+  padding: 20px;
+}
+
+.hero-content h1 {
+  font-size: 42px;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.hero-content p {
+  font-size: 18px;
+  margin-bottom: 30px;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.btn-primary,
+.btn-secondary {
+  border: none;
+  padding: 14px 24px;
+  border-radius: 12px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: .3s;
+}
+
+.btn-primary {
+  background: #e91e63;
+  color: white;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background: white;
+  color: #333;
+}
+
+.cards-container {
+  max-width: 1200px;
+  margin: -60px auto 0;
+  padding: 20px;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
+  gap: 20px;
+}
+
+.info-card {
+  background: white;
+  padding: 25px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,.08);
+  text-align: center;
+}
+
+.icon {
+  width: 70px;
+  height: 70px;
+  margin: auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+  background: #fde8ef;
+  color: #e91e63;
+  font-size: 28px;
+}
+
+.info-card h3 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.info-card p {
+  color: #666;
+}

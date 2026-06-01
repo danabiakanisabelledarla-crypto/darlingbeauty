@@ -1,0 +1,85 @@
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Clients</h1>
+    <p class="page-subtitle">Gérez votre clientèle Darling Beauty</p>
+  </div>
+  <a routerLink="/clients/new" class="btn-primary">
+    <i class="bi bi-person-plus"></i> Nouveau client
+  </a>
+</div>
+
+<div class="alert alert-success" *ngIf="success"><i class="bi bi-check-circle"></i> {{ success }}</div>
+<div class="alert alert-danger" *ngIf="error"><i class="bi bi-exclamation-circle"></i> {{ error }}</div>
+
+<div class="card">
+  <div class="card-header">
+    <div class="search-bar">
+      <i class="bi bi-search"></i>
+      <input type="text" [(ngModel)]="searchQuery" (input)="onSearch()"
+             placeholder="Rechercher un client...">
+    </div>
+    <span class="text-muted">{{ clients.length }} client(s)</span>
+  </div>
+
+  <div class="spinner-wrapper" *ngIf="loading"><div class="spinner"></div></div>
+
+  <div class="empty-state" *ngIf="!loading && clients.length === 0">
+    <i class="bi bi-people"></i>
+    <p>Aucun client trouvé.</p>
+  </div>
+
+  <div class="table-wrapper" *ngIf="!loading && clients.length > 0">
+    <table>
+      <thead>
+        <tr>
+          <th>Nom complet</th>
+          <th>Téléphone</th>
+          <th>Email</th>
+          <th>Genre</th>
+          <th>Statut</th>
+          <th class="text-right">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let client of clients">
+          <td class="fw-600">{{ client.prenom }} {{ client.nom }}</td>
+          <td>{{ client.telephone }}</td>
+          <td>{{ client.email || '—' }}</td>
+          <td>{{ client.genre === 'F' ? 'Femme' : client.genre === 'M' ? 'Homme' : 'Autre' }}</td>
+          <td>
+            <span [class]="client.actif ? 'badge badge-success' : 'badge badge-secondary'">
+              {{ client.actif ? 'Actif' : 'Inactif' }}
+            </span>
+          </td>
+          <td class="text-right">
+            <a [routerLink]="['/clients', client.id, 'edit']" class="btn-icon edit">
+              <i class="bi bi-pencil"></i>
+            </a>
+            <button class="btn-icon delete" (click)="confirmDelete(client.id!)">
+              <i class="bi bi-trash"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Delete modal -->
+<div class="modal-backdrop" *ngIf="deleteConfirmId">
+  <div class="modal-box" style="max-width: 420px;">
+    <div class="modal-header">
+      <h3>Confirmer la suppression</h3>
+      <button class="btn-close" (click)="cancelDelete()">✕</button>
+    </div>
+    <div class="modal-body">
+      <p>Êtes-vous sûr de vouloir supprimer ce client ? Cette action est irréversible.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" (click)="cancelDelete()">Annuler</button>
+      <button class="btn-danger" (click)="delete(deleteConfirmId!)">
+        <i class="bi bi-trash"></i> Supprimer
+      </button>
+    </div>
+  </div>
+</div>

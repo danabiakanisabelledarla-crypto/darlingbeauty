@@ -1,0 +1,78 @@
+<!-- Global loading bar -->
+<div class="loading-bar" *ngIf="isLoading"></div>
+
+<!-- Auth layout (no sidebar) -->
+<ng-container *ngIf="!isLoggedIn">
+  <router-outlet></router-outlet>
+</ng-container>
+
+<!-- Main app layout with sidebar -->
+<div class="app-wrapper" *ngIf="isLoggedIn">
+  <!-- Sidebar overlay for mobile -->
+  <div class="sidebar-overlay" [class.active]="sidebarOpen" (click)="toggleSidebar()"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" [class.open]="sidebarOpen">
+    <!-- <div class="sidebar-brand">
+      <div class="brand-logo">
+        <span class="brand-icon">✦</span>
+        <div>
+          <div class="brand-name">Darling Beauty</div>
+          <div class="brand-sub">Institut de beauté</div>
+        </div>
+      </div>
+    </div>-->
+    <div class="sidebar-brand">
+
+  <img
+    src="assets/images/logo.png"
+    alt="logo"
+    class="sidebar-logo">
+
+  <div class="sidebar-title">
+    DARLING
+  </div>
+
+  <div class="sidebar-title">
+    BEAUTY
+  </div>
+
+</div>
+
+    <nav class="sidebar-nav">
+      <a *ngFor="let item of navItems"
+         [routerLink]="item.route"
+         routerLinkActive="active"
+         class="nav-item">
+        <i [class]="'bi ' + item.icon"></i>
+        <span>{{ item.label }}</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-info" *ngIf="currentUser">
+        <div class="user-avatar">{{ currentUser.username.charAt(0).toUpperCase() }}</div>
+        <div class="user-details">
+          <div class="user-name">{{ currentUser.first_name || currentUser.username }}</div>
+          <div class="user-email">{{ currentUser.email }}</div>
+        </div>
+      </div>
+      <button class="btn-logout" (click)="logout()">
+        <i class="bi bi-box-arrow-right"></i> Déconnexion
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main content -->
+  <main class="main-content">
+    <header class="topbar">
+      <button class="btn-menu d-lg-none" (click)="toggleSidebar()">
+        <i class="bi bi-list"></i>
+      </button>
+      <div class="topbar-title">Darling Beauty</div>
+    </header>
+    <div class="page-content">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+</div>

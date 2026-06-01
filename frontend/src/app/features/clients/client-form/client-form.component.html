@@ -1,0 +1,94 @@
+<div class="page-header">
+  <div>
+    <h1 class="page-title">{{ isEdit ? 'Modifier le client' : 'Nouveau client' }}</h1>
+    <p class="page-subtitle">{{ isEdit ? 'Mettez à jour les informations' : 'Enregistrez un nouveau client' }}</p>
+  </div>
+  <a routerLink="/clients" class="btn-secondary">
+    <i class="bi bi-arrow-left"></i> Retour
+  </a>
+</div>
+
+<div class="spinner-wrapper" *ngIf="loadingData"><div class="spinner"></div></div>
+
+<div class="card" *ngIf="!loadingData">
+  <div class="alert alert-danger" *ngIf="error"><i class="bi bi-exclamation-circle"></i> {{ error }}</div>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="grid-2">
+      <div class="form-group">
+        <label>Prénom *</label>
+        <input type="text" class="form-control"
+               [class.is-invalid]="f['prenom'].invalid && f['prenom'].touched"
+               formControlName="prenom" placeholder="Prénom du client">
+        <div class="invalid-feedback" *ngIf="f['prenom'].errors?.['required'] && f['prenom'].touched">Requis</div>
+      </div>
+      <div class="form-group">
+        <label>Nom *</label>
+        <input type="text" class="form-control"
+               [class.is-invalid]="f['nom'].invalid && f['nom'].touched"
+               formControlName="nom" placeholder="Nom de famille">
+        <div class="invalid-feedback" *ngIf="f['nom'].errors?.['required'] && f['nom'].touched">Requis</div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="form-group">
+        <label>Téléphone *</label>
+        <input type="tel" class="form-control"
+               [class.is-invalid]="f['telephone'].invalid && f['telephone'].touched"
+               formControlName="telephone" placeholder="Ex: 699 000 000">
+        <div class="invalid-feedback" *ngIf="f['telephone'].errors?.['required'] && f['telephone'].touched">Requis</div>
+        <div class="invalid-feedback" *ngIf="f['telephone'].errors?.['minlength'] && f['telephone'].touched">Min 8 chiffres</div>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" class="form-control"
+               [class.is-invalid]="f['email'].invalid && f['email'].touched"
+               formControlName="email" placeholder="email@exemple.com">
+        <div class="invalid-feedback" *ngIf="f['email'].errors?.['email'] && f['email'].touched">Email invalide</div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="form-group">
+        <label>Genre *</label>
+        <select class="form-control" formControlName="genre">
+          <option value="F">Femme</option>
+          <option value="M">Homme</option>
+          <option value="A">Autre</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Date de naissance</label>
+        <input type="date" class="form-control" formControlName="date_naissance">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Adresse</label>
+      <input type="text" class="form-control" formControlName="adresse" placeholder="Adresse complète">
+    </div>
+
+    <div class="form-group">
+      <label>Notes (allergies, préférences...)</label>
+      <textarea class="form-control" formControlName="notes" rows="3"
+                placeholder="Allergies, préférences de soin, remarques..."></textarea>
+    </div>
+
+    <div class="form-group" *ngIf="isEdit">
+      <label class="checkbox-label">
+        <input type="checkbox" formControlName="actif">
+        Client actif
+      </label>
+    </div>
+
+    <div class="form-actions">
+      <a routerLink="/clients" class="btn-secondary">Annuler</a>
+      <button type="submit" class="btn-primary" [disabled]="loading">
+        <span class="spinner-sm" *ngIf="loading"></span>
+        <i class="bi bi-check-lg" *ngIf="!loading"></i>
+        {{ loading ? 'Sauvegarde...' : (isEdit ? 'Mettre à jour' : 'Enregistrer') }}
+      </button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,22 @@
+.filters-card { margin-bottom: 20px; padding: 16px 24px; }
+
+.filters-row {
+  display: flex;
+  gap: 16px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.statut-select {
+  padding: 5px 10px;
+  border: 1.5px solid var(--gray-200);
+  border-radius: 6px;
+  font-size: 12px;
+  font-family: var(--font-body);
+  background: white;
+  cursor: pointer;
+  outline: none;
+  color: var(--text);
+
+  &:focus { border-color: var(--rose); }
+}

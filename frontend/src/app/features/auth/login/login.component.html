@@ -1,0 +1,85 @@
+<div class="auth-page">
+
+  <!-- GAUCHE : photo + texte -->
+  <div class="auth-left">
+    <img src="assets/darla.png" alt="Darling Beauty" class="bg-photo">
+    <div class="left-overlay"></div>
+    <div class="left-content">
+      <div class="brand-name">Darling Beauty</div>
+      <div class="left-bottom">
+        <div class="excellence-label">Excellence &amp; Beauté</div>
+        <h2 class="left-title">L'Art de la Beauté<br>Sophistiqué</h2>
+        <p class="left-quote">"Rejoignez unz communauté exclusive dédiée à la mise en valeur de votre beauté naturelle.<br> Chaque soin est une signature, chaque geste une promesse de perfection."</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- DROITE : formulaire -->
+  <div class="auth-right">
+    <div class="auth-form-wrapper">
+
+      <h1 class="auth-title">Connexion</h1>
+      <p class="auth-subtitle">Accédez à votre espace privilégié</p>
+
+      <div class="alert-error" *ngIf="error">
+        <i class="bi bi-exclamation-circle"></i> {{ error }}
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+        <div class="form-group">
+          <label>E-mail</label>
+          <div class="input-wrapper" [class.is-invalid]="f['username'].invalid && f['username'].touched">
+            <span class="input-icon"><i class="bi bi-envelope"></i></span>
+            <input type="text" formControlName="username" placeholder="example@gmail.com">
+          </div>
+          <div class="invalid-feedback" *ngIf="f['username'].errors?.['required'] && f['username'].touched">
+            Ce champ est requis.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Mot de passe</label>
+          <div class="input-wrapper" [class.is-invalid]="f['password'].invalid && f['password'].touched">
+            <span class="input-icon"><i class="bi bi-lock"></i></span>
+            <input [type]="showPassword ? 'text' : 'password'" formControlName="password" placeholder="••••••••••••••••••••••">
+            <button type="button" class="eye-btn" (click)="showPassword = !showPassword">
+              <i [class]="showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+            </button>
+          </div>
+          <div class="invalid-feedback" *ngIf="f['password'].errors?.['required'] && f['password'].touched">
+            Ce champ est requis.
+          </div>
+        </div>
+
+        <div class="form-options">
+          <label class="remember-me">
+            <input type="checkbox"> Se souvenir de moi
+          </label>
+          <a href="#" class="forgot-link">Mot de passe oublié ?</a>
+        </div>
+
+        <button type="submit" class="btn-submit" [disabled]="loading">
+          <span class="spinner-sm" *ngIf="loading"></span>
+          {{ loading ? 'Connexion...' : 'SE CONNECTER' }}
+        </button>
+
+      </form>
+
+      <div class="divider"><span>OU CONTINUER AVEC</span></div>
+
+      <div class="social-row">
+        <button class="btn-google" type="button">
+          <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google">
+        </button>
+      </div>
+
+      <p class="auth-footer">
+        Nouveau client ? <a routerLink="/auth/register">Créer un compte</a>
+      </p>
+
+      <p class="copyright">© 2026 Darling Beauty. All Rights Reserved.</p>
+    </div>
+  </div>
+
+</div>

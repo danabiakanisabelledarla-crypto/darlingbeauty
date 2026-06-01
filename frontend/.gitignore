@@ -1,0 +1,13 @@
+# Angular
+dist/
+node_modules/
+.angular/
+*.js.map
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# Environment
+.env

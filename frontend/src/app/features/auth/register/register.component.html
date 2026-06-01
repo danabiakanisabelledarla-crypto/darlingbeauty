@@ -1,0 +1,97 @@
+<div class="auth-page">
+
+  <div class="auth-left">
+    <img src="assets/darla.png" alt="Darling Beauty" class="bg-photo">
+    <div class="left-overlay"></div>
+    <div class="left-content">
+      <div class="brand-name">Darling Beauty</div>
+      <div class="left-bottom">
+        <div class="excellence-label">Excellence &amp; Beauté</div>
+        <h2 class="left-title">L'Art de la Beauté<br>Sophistiquée</h2>
+        <p class="left-quote">"Rejoignez unz communauté exclusive dédiée à la mise en valeur de votre beauté naturelle.<br> Chaque soin est une signature, chaque geste une promesse de perfection."</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="auth-right">
+    <div class="auth-form-wrapper">
+
+      <h1 class="auth-title">Créer un compte</h1>
+      <p class="auth-subtitle">Veuillez remplir vos informations pour commencer votre voyage vers l'excellence.</p>
+
+      <div class="alert-error" *ngIf="error">
+        <i class="bi bi-exclamation-circle"></i> {{ error }}
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+        <div class="form-group">
+          <label>Nom complet</label>
+          <div class="input-wrapper" [class.is-invalid]="f['first_name'].invalid && f['first_name'].touched">
+            <span class="input-icon"><i class="bi bi-person-circle"></i></span>
+            <input type="text" formControlName="first_name" placeholder="danabiakan darla zobo">
+          </div>
+          <div class="invalid-feedback" *ngIf="f['first_name'].errors?.['required'] && f['first_name'].touched">Requis</div>
+        </div>
+
+        <div class="form-group">
+          <label>Adresse Email</label>
+          <div class="input-wrapper" [class.is-invalid]="f['email'].invalid && f['email'].touched">
+            <span class="input-icon"><i class="bi bi-envelope"></i></span>
+            <input type="email" formControlName="email" placeholder="example@gmail.com">
+          </div>
+          <div class="invalid-feedback" *ngIf="f['email'].errors?.['email'] && f['email'].touched">Email invalide</div>
+        </div>
+
+        <div class="form-group">
+          <label>Nom d'utilisateur</label>
+          <div class="input-wrapper" [class.is-invalid]="f['username'].invalid && f['username'].touched">
+            <span class="input-icon"><i class="bi bi-at"></i></span>
+            <input type="text" formControlName="username" placeholder="nom_utilisateur">
+          </div>
+          <div class="invalid-feedback" *ngIf="f['username'].errors?.['required'] && f['username'].touched">Requis</div>
+        </div>
+
+        <div class="form-group">
+          <label>Mot de passe</label>
+          <div class="input-wrapper" [class.is-invalid]="f['password'].invalid && f['password'].touched">
+            <span class="input-icon"><i class="bi bi-lock"></i></span>
+            <input [type]="showPassword ? 'text' : 'password'" formControlName="password" placeholder="••••••••••••••••••••••">
+            <button type="button" class="eye-btn" (click)="showPassword = !showPassword">
+              <i [class]="showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+            </button>
+          </div>
+          <div class="invalid-feedback" *ngIf="f['password'].errors?.['minlength'] && f['password'].touched">Min 8 caractères</div>
+        </div>
+        <div class="form-group">
+          <label>Confirmer le mot de passe</label>
+          <div class="input-wrapper">
+            <span class="input-icon">
+              <i class="bi bi-lock"></i>
+            </span>
+            <input type="password" formControlName="password2" placeholder="Confirmer votre mot de passe" >
+          </div>
+        </div>
+
+        <button type="submit" class="btn-submit" [disabled]="loading">
+          <span class="spinner-sm" *ngIf="loading"></span>
+          {{ loading ? 'Inscription...' : "S'INSCRIRE" }}
+        </button>
+
+      </form>
+
+      <p class="auth-footer" style="font-size:13px; color: rgba(255,255,255,0.45);">
+        En vous inscrivant, vous acceptez nos
+        <a href="#">Conditions d'Utilisation</a> et notre
+        <a href="#">Politique de Confidentialité</a>.
+      </p>
+
+      <p class="auth-footer">
+        Déjà un compte ? <a routerLink="/auth/login">Se connecter</a>
+      </p>
+
+      <p class="copyright">© 2026 Darling Beauty. All Rights Reserved.</p>
+    </div>
+  </div>
+
+</div>

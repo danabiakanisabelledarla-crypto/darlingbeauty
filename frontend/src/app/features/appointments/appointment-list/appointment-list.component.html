@@ -1,0 +1,102 @@
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Rendez-vous</h1>
+    <p class="page-subtitle">Planning et suivi des rendez-vous</p>
+  </div>
+  <a routerLink="/appointments/new" class="btn-primary">
+    <i class="bi bi-plus-lg"></i> Nouveau RDV
+  </a>
+</div>
+
+<div class="alert alert-success" *ngIf="success"><i class="bi bi-check-circle"></i> {{ success }}</div>
+<div class="alert alert-danger"  *ngIf="error"><i class="bi bi-exclamation-circle"></i> {{ error }}</div>
+
+<!-- Filters -->
+<div class="card filters-card">
+  <div class="filters-row">
+    <div class="form-group" style="margin:0; flex:1;">
+      <label>Filtrer par statut</label>
+      <select class="form-control" [(ngModel)]="filterStatut" (change)="onFilter()">
+        <option *ngFor="let s of statutOptions" [value]="s.value">{{ s.label }}</option>
+      </select>
+    </div>
+    <div class="form-group" style="margin:0; flex:1;">
+      <label>Filtrer par date</label>
+      <input type="date" class="form-control" [(ngModel)]="filterDate" (change)="onFilter()">
+    </div>
+    <button class="btn-secondary" style="align-self:flex-end;" (click)="filterStatut=''; filterDate=''; onFilter()">
+      <i class="bi bi-x-circle"></i> Réinitialiser
+    </button>
+  </div>
+</div>
+
+<div class="card">
+  <div class="spinner-wrapper" *ngIf="loading"><div class="spinner"></div></div>
+
+  <div class="empty-state" *ngIf="!loading && appointments.length === 0">
+    <i class="bi bi-calendar-x"></i>
+    <p>Aucun rendez-vous trouvé.</p>
+    <a routerLink="/appointments/new" class="btn-primary" style="display:inline-flex; margin-top:12px;">
+      <i class="bi bi-plus"></i> Créer un rendez-vous
+    </a>
+  </div>
+
+  <div class="table-wrapper" *ngIf="!loading && appointments.length > 0">
+    <table>
+      <thead>
+        <tr>
+          <th>Date &amp; Heure</th>
+          <th>Client</th>
+          <th>Service</th>
+          <th>Durée</th>
+          <th>Prix</th>
+          <th>Statut</th>
+          <th class="text-right">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let rdv of appointments">
+          <td class="fw-600">
+            {{ rdv.date_heure | date:'dd/MM/yyyy' }}<br>
+            <span class="text-muted">{{ rdv.date_heure | date:'HH:mm' }}</span>
+          </td>
+          <td>{{ rdv.client_nom }}</td>
+          <td>{{ rdv.service_nom }}</td>
+          <td>{{ rdv.service_duree }} min</td>
+          <td>{{ rdv.prix_applique | number }} FCFA</td>
+          <td>
+            <select class="statut-select" [value]="rdv.statut"
+                    (change)="updateStatut(rdv.id!, $any($event.target).value)">
+              <option *ngFor="let s of statutOptions.slice(1)" [value]="s.value">{{ s.label }}</option>
+            </select>
+          </td>
+          <td class="text-right">
+            <a [routerLink]="['/appointments', rdv.id, 'edit']" class="btn-icon edit">
+              <i class="bi bi-pencil"></i>
+            </a>
+            <button class="btn-icon delete" (click)="confirmDelete(rdv.id!)">
+              <i class="bi bi-trash"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Delete modal -->
+<div class="modal-backdrop" *ngIf="deleteConfirmId">
+  <div class="modal-box" style="max-width:420px;">
+    <div class="modal-header">
+      <h3>Supprimer le rendez-vous</h3>
+      <button class="btn-close" (click)="cancelDelete()">✕</button>
+    </div>
+    <div class="modal-body"><p>Cette action est irréversible. Confirmer ?</p></div>
+    <div class="modal-footer">
+      <button class="btn-secondary" (click)="cancelDelete()">Annuler</button>
+      <button class="btn-danger" (click)="delete(deleteConfirmId!)">
+        <i class="bi bi-trash"></i> Supprimer
+      </button>
+    </div>
+  </div>
+</div>
