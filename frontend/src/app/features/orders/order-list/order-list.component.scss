@@ -1,0 +1,115 @@
+.filters-card { margin-bottom: 20px; padding: 16px 24px; }
+
+.filters-row {
+  display: flex;
+  gap: 16px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.statut-select {
+  padding: 5px 10px;
+  border: 1.5px solid var(--gray-200);
+  border-radius: 6px;
+  font-size: 12px;
+  font-family: var(--font-body);
+  background: white;
+  cursor: pointer;
+  outline: none;
+  color: var(--text);
+}
+.statut-select:focus { border-color: var(--rose); }
+.statut-select:disabled { opacity: .5; cursor: not-allowed; }
+
+.badge-info { background: #DBEAFE; color: #1E40AF; }
+
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.order-item {
+  border: 1.5px solid var(--gray-200);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color .2s;
+}
+.order-item.expanded { border-color: var(--rose); }
+
+.order-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 18px;
+  cursor: pointer;
+  flex-wrap: wrap;
+}
+.order-header:hover { background: var(--gray-50); }
+
+.oh-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 120px;
+}
+.order-id { font-weight: 700; color: var(--rose-dark); }
+.order-client { font-size: .85rem; color: var(--gray-600); }
+.order-client i { margin-right: 4px; }
+
+.oh-mid {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  min-width: 120px;
+}
+.order-date { font-size: .8rem; color: var(--gray-500); }
+.order-total { font-weight: 700; color: var(--text); }
+
+.oh-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.order-details {
+  padding: 0 18px 18px;
+  border-top: 1px solid var(--gray-100);
+  padding-top: 14px;
+}
+
+.ds-title {
+  font-weight: 700;
+  color: var(--rose-dark);
+  font-size: .9rem;
+  margin-bottom: 8px;
+}
+.ds-title i { margin-right: 6px; }
+
+.order-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+.order-line {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  background: var(--gray-50);
+  border-radius: 8px;
+  font-size: .9rem;
+}
+.order-line .ol-name { flex: 1; }
+.order-line .ol-qty  { color: var(--gray-500); }
+.order-line .ol-price { font-weight: 600; min-width: 90px; text-align: right; }
+
+.detail-row {
+  font-size: .88rem;
+  color: var(--gray-600);
+  margin-top: 6px;
+}
+.detail-row i { margin-right: 6px; color: var(--rose); }

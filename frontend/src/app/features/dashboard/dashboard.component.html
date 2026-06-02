@@ -1,5 +1,15 @@
 <div class="dashboard-luxury">
 
+  <a class="order-alert" *ngIf="commandesEnAttente > 0" routerLink="/orders">
+    <i class="bi bi-bell-fill"></i>
+    <span>
+      <strong>{{ commandesEnAttente }}</strong>
+      nouvelle{{ commandesEnAttente > 1 ? 's' : '' }} commande{{ commandesEnAttente > 1 ? 's' : '' }}
+      en attente de traitement
+    </span>
+    <i class="bi bi-arrow-right"></i>
+  </a>
+
   <div class="hero-banner">
 
     <div class="hero-info">

@@ -15,8 +15,14 @@ export class OrderService {
   constructor(private http: HttpClient) {}
 
   // ── Commandes API ──────────────────────────────────────────────
+  // ── Commandes API ──────────────────────────────────────────────
   getMyOrders(): Observable<Commande[]> {
     return this.http.get<Commande[]>(`${this.API}/mes_commandes/`);
+  }
+
+  /** Toutes les commandes (admin uniquement) */
+  getAll(): Observable<Commande[]> {
+    return this.http.get<Commande[]>(`${this.API}/`);
   }
 
   getById(id: number): Observable<Commande> {
@@ -29,6 +35,11 @@ export class OrderService {
 
   cancel(id: number): Observable<Commande> {
     return this.http.patch<Commande>(`${this.API}/${id}/`, { statut: 'annulee' });
+  }
+
+  /** Mise à jour du statut (admin) */
+  updateStatut(id: number, statut: string): Observable<Commande> {
+    return this.http.patch<Commande>(`${this.API}/${id}/`, { statut });
   }
 
   // ── Panier local ───────────────────────────────────────────────

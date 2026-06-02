@@ -22,6 +22,18 @@ class CommandeSerializer(serializers.ModelSerializer):
                   'adresse_livraison', 'notes', 'date_creation', 'date_modification']
         read_only_fields = ['id', 'client_username', 'total', 'date_creation', 'date_modification']
 
+    def validate(self, attrs):
+        request = self.context.get('request')
+        if request and not request.user.is_staff and self.instance is not None:
+            # Un client ne peut qu'annuler sa propre commande, et seulement si elle est en attente
+            nouveau_statut = attrs.get('statut')
+            if nouveau_statut is not None:
+                if nouveau_statut != 'annulee' or self.instance.statut != 'en_attente':
+                    raise serializers.ValidationError(
+                        {"statut": "Vous ne pouvez qu'annuler une commande en attente."}
+                    )
+        return attrs
+
     def create(self, validated_data):
         lignes_data = validated_data.pop('lignes')
         commande = Commande.objects.create(

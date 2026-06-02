@@ -21,7 +21,8 @@ export class AppComponent implements OnInit {
   { label: 'Rendez-vous', icon: 'bi-calendar-check', route: '/appointments' },
   { label: 'Clients', icon: 'bi-people', route: '/clients' },
   { label: 'Services', icon: 'bi-scissors', route: '/services' },
-  { label: 'Produits', icon: 'bi-bag', route: '/products' }
+  { label: 'Produits', icon: 'bi-bag', route: '/products' },
+  { label: 'Commandes', icon: 'bi-cart-check', route: '/orders' }
 ];
 
 clientNavItems = [
@@ -31,20 +32,15 @@ clientNavItems = [
     route: '/client-dashboard'
   },
   {
+    label: 'Services',
+    icon: 'bi-stars',
+    route: '/client-dashboard/services'
+  },
+  {
     label: 'Mes rendez-vous',
     icon: 'bi-calendar-check',
     route: '/client-dashboard/appointments'
   },
-  {
-    label: 'Produits',
-    icon: 'bi-bag-heart',
-    route: '/client-dashboard/products'
-  },
-  {
-    label: 'Mes commandes',
-    icon: 'bi-cart-check',
-    route: '/client-dashboard/orders'
-  }
 ];
 
 get navItems() {

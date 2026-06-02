@@ -3,9 +3,9 @@ import { AppointmentService } from '../../core/services/appointment.service';
 import { ClientService } from '../../core/services/client.service';
 import { ServiceBeauteService } from '../../core/services/service-beaute.service';
 import { ProduitService } from '../../core/services/produit.service';
+import { OrderService } from '../../core/services/order.service';
 import { RendezVous, STATUT_LABELS, STATUT_COLORS } from '../../core/models/appointment.model';
 import { AuthService } from '../../core/services/auth.service';
-
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -21,6 +21,7 @@ export class DashboardComponent implements OnInit {
   totalServices = 0;
   //prodStockBas = 0;
   stockTotal = 0;
+  commandesEnAttente = 0;
   //loading = true;
   loading = true;
   updatingId: number | null = null;
@@ -34,6 +35,7 @@ export class DashboardComponent implements OnInit {
     private clientService: ClientService,
     private serviceBeauteService: ServiceBeauteService,
     private produitService: ProduitService,
+    private orderService: OrderService,
     private authService: AuthService
   ) {}
 
@@ -62,6 +64,11 @@ export class DashboardComponent implements OnInit {
     });
     this.clientService.getAll().subscribe(c => this.totalClients = c.length);
     this.serviceBeauteService.getAll().subscribe(s => this.totalServices = s.length);
+
+    this.orderService.getAll().subscribe(orders => {
+      this.commandesEnAttente = orders.filter(o => o.statut === 'en_attente').length;
+    });
+  
     //this.produitService.getStockBas().subscribe(p => this.prodStockBas = p.length);
   }
 

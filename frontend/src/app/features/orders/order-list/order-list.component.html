@@ -1,0 +1,80 @@
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Commandes</h1>
+    <p class="page-subtitle">Suivi des commandes de produits passées par les clients</p>
+  </div>
+</div>
+
+<div class="alert alert-success" *ngIf="success"><i class="bi bi-check-circle"></i> {{ success }}</div>
+<div class="alert alert-danger"  *ngIf="error"><i class="bi bi-exclamation-circle"></i> {{ error }}</div>
+
+<!-- Filtres -->
+<div class="card filters-card">
+  <div class="filters-row">
+    <div class="form-group" style="margin:0; flex:1;">
+      <label>Filtrer par statut</label>
+      <select class="form-control" [(ngModel)]="filterStatut">
+        <option *ngFor="let s of statutOptions" [value]="s.value">
+          {{ s.label }} ({{ countByStatut(s.value) }})
+        </option>
+      </select>
+    </div>
+    <button class="btn-secondary" style="align-self:flex-end;" (click)="filterStatut=''">
+      <i class="bi bi-x-circle"></i> Réinitialiser
+    </button>
+  </div>
+</div>
+
+<div class="card">
+  <div class="spinner-wrapper" *ngIf="loading"><div class="spinner"></div></div>
+
+  <div class="empty-state" *ngIf="!loading && filteredOrders.length === 0">
+    <i class="bi bi-bag-x"></i>
+    <p>Aucune commande trouvée.</p>
+  </div>
+
+  <div class="orders-list" *ngIf="!loading && filteredOrders.length > 0">
+    <div class="order-item" *ngFor="let order of filteredOrders" [class.expanded]="expandedId === order.id">
+
+      <div class="order-header" (click)="toggle(order.id!)">
+        <div class="oh-left">
+          <span class="order-id">#{{ order.id }}</span>
+          <span class="order-client"><i class="bi bi-person"></i> {{ order.client_username }}</span>
+        </div>
+        <div class="oh-mid">
+          <span class="order-date">{{ order.date_creation | date:'dd/MM/yyyy HH:mm' }}</span>
+          <span class="order-total">{{ order.total | number:'1.0-0' }} FCFA</span>
+        </div>
+        <div class="oh-right">
+          <select class="statut-select" [value]="order.statut"
+                  (click)="$event.stopPropagation()"
+                  (change)="updateStatut(order, $any($event.target).value)"
+                  [disabled]="updatingId === order.id">
+            <option *ngFor="let s of statutOptions.slice(1)" [value]="s.value">{{ s.label }}</option>
+          </select>
+          <i class="bi" [class.bi-chevron-down]="expandedId !== order.id"
+             [class.bi-chevron-up]="expandedId === order.id"></i>
+        </div>
+      </div>
+
+      <div class="order-details" *ngIf="expandedId === order.id">
+        <div class="ds-title"><i class="bi bi-bag"></i> Articles commandés</div>
+        <div class="order-lines">
+          <div class="order-line" *ngFor="let line of order.lignes">
+            <span class="ol-name">{{ line.produit_nom || 'Produit #' + line.produit_id }}</span>
+            <span class="ol-qty">× {{ line.quantite }}</span>
+            <span class="ol-price">{{ line.sous_total | number:'1.0-0' }} FCFA</span>
+          </div>
+        </div>
+
+        <div class="detail-row" *ngIf="order.adresse_livraison">
+          <i class="bi bi-geo-alt"></i> <strong>Livraison :</strong> {{ order.adresse_livraison }}
+        </div>
+        <div class="detail-row" *ngIf="order.notes">
+          <i class="bi bi-chat-text"></i> <strong>Notes :</strong> {{ order.notes }}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

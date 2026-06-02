@@ -1,1 +1,51 @@
-<p>services-client works!</p>
+<div class="services-page">
+
+  <div class="page-header">
+    <a class="btn-back" routerLink="/client-dashboard"><i class="bi bi-arrow-left"></i></a>
+    <div>
+      <h1>Nos services</h1>
+      <p>Découvrez nos prestations, leurs prix et durées</p>
+    </div>
+  </div>
+
+  <!-- Chargement -->
+  <div *ngIf="loading" class="services-grid">
+    <div class="skeleton-card" *ngFor="let i of [1,2,3,4]"></div>
+  </div>
+
+  <!-- Erreur -->
+  <div *ngIf="!loading && errorMsg" class="alert-error">
+    <i class="bi bi-exclamation-triangle"></i> {{ errorMsg }}
+    <button (click)="load()">Réessayer</button>
+  </div>
+
+  <!-- Vide -->
+  <div *ngIf="!loading && !errorMsg && services.length === 0" class="empty-state">
+    <i class="bi bi-scissors"></i>
+    <p>Aucun service disponible pour le moment.</p>
+  </div>
+
+  <!-- Grille services -->
+  <div *ngIf="!loading && !errorMsg && services.length > 0" class="services-grid">
+    <div class="service-card" *ngFor="let s of services">
+
+      <div class="sc-icon"><i class="bi bi-stars"></i></div>
+
+      <div class="sc-body">
+        <h3>{{ s.nom }}</h3>
+        <p *ngIf="s.description" class="sc-desc">{{ s.description }}</p>
+
+        <div class="sc-meta">
+          <span class="sc-duree"><i class="bi bi-clock"></i> {{ formatDuree(s.duree_minutes) }}</span>
+          <span class="sc-prix">{{ s.prix | number:'1.0-0' }} FCFA</span>
+        </div>
+      </div>
+
+      <a routerLink="/client-dashboard/prendre-rdv" class="sc-cta">
+        <i class="bi bi-calendar-plus"></i> Réserver
+      </a>
+
+    </div>
+  </div>
+
+</div>

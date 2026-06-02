@@ -486,3 +486,22 @@ tr:hover{
   color: #888;
 }
 .empty-rdv i { font-size: 2.5rem; color: rgba(212,175,55,.3); display: block; margin-bottom: 10px; }
+.order-alert {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+  margin-bottom: 16px;
+  background: rgba(212,175,55,.1);
+  border: 1px solid rgba(212,175,55,.4);
+  border-radius: 12px;
+  color: #d4af37;
+  text-decoration: none;
+  font-size: .92rem;
+  transition: background .2s;
+}
+.order-alert i:first-child { font-size: 1.2rem; }
+.order-alert i:last-child { margin-left: auto; }
+.order-alert span { flex: 1; }
+.order-alert strong { font-size: 1.05rem; }
+.order-alert:hover { background: rgba(212,175,55,.18); }

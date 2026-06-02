@@ -16,7 +16,10 @@
       <h1>Bienvenue chez Darling Beauty</h1>
       <p>Réservez vos prestations, consultez vos rendez-vous et suivez vos commandes en toute simplicité.</p>
       <div class="action-buttons">
-        <button class="btn-primary" routerLink="/client-dashboard/prendre-rdv">
+        <button class="btn-primary" routerLink="/client-dashboard/services">
+          <i class="bi bi-stars"></i> Les services
+        </button>
+        <button class="btn-secondary" routerLink="/client-dashboard/prendre-rdv">
           <i class="bi bi-calendar-plus"></i> Prendre un rendez-vous
         </button>
         <button class="btn-secondary" routerLink="/client-dashboard/products">
@@ -27,6 +30,12 @@
   </div>
 
   <div class="cards-container">
+    <a class="info-card" routerLink="/client-dashboard/services">
+      <div class="icon"><i class="bi bi-stars"></i></div>
+      <h3>Les services</h3>
+      <p>Découvrez nos prestations avec leurs prix et durées.</p>
+      <span class="card-link">Découvrir <i class="bi bi-arrow-right"></i></span>
+    </a>
 
     <a class="info-card" routerLink="/client-dashboard/appointments">
       <div class="icon"><i class="bi bi-calendar-check"></i></div>

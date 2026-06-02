@@ -6,6 +6,7 @@ import { AppointmentsClientComponent } from './pages/appointments-client/appoint
 import { ProductsClientComponent } from './pages/products-client/products-client.component';
 import { OrdersClientComponent } from './pages/orders-client/orders-client.component';
 import { PrendreRdvComponent } from './pages/prendre-rdv/prendre-rdv.component';
+import { ServicesClientComponent } from './pages/services-client/services-client.component';
 
 const routes: Routes = [
   { path: '',               component: ClientDashboardComponent },
@@ -13,6 +14,7 @@ const routes: Routes = [
   { path: 'products',       component: ProductsClientComponent },
   { path: 'orders',         component: OrdersClientComponent },
   { path: 'prendre-rdv',    component: PrendreRdvComponent },
+  { path: 'services',       component: ServicesClientComponent },
 ];
 
 @NgModule({
