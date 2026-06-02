@@ -1,7 +1,17 @@
 {
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist/darling-beauty"
+      }
+    }
   ],
-  "buildCommand": "npm run build:prod",
-  "outputDirectory": "dist/darling-beauty"
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ]
 }

@@ -16,12 +16,15 @@ html {
 .app-wrapper {
   background: #050505;
   min-height: 100vh;
+  display: flex;
+  overflow: hidden;
 }
 
 .main-content {
     flex: 1;
-    width: calc(100% - 240px);
-  background: #050505;
+    min-width: 0;
+    background: #050505;
+    overflow-y: auto;
 }
 
 .page-content {
