@@ -1,18 +1,17 @@
 <!-- Global loading bar -->
 <div class="loading-bar" *ngIf="isLoading"></div>
 
-<!-- Auth layout (no sidebar) -->
-<ng-container *ngIf="!isLoggedIn">
-  <router-outlet></router-outlet>
-</ng-container>
-
-<!-- Main app layout with sidebar -->
-<div class="app-wrapper" *ngIf="isLoggedIn">
+<div [class.app-wrapper]="isLoggedIn">
   <!-- Sidebar overlay for mobile -->
-  <div class="sidebar-overlay" [class.active]="sidebarOpen" (click)="toggleSidebar()"></div>
+  <div
+    *ngIf="isLoggedIn"
+    class="sidebar-overlay"
+    [class.active]="sidebarOpen"
+    (click)="toggleSidebar()">
+  </div>
 
   <!-- Sidebar -->
-  <aside class="sidebar" [class.open]="sidebarOpen">
+  <aside *ngIf="isLoggedIn" class="sidebar" [class.open]="sidebarOpen">
     <!-- <div class="sidebar-brand">
       <div class="brand-logo">
         <span class="brand-icon">✦</span>
@@ -64,14 +63,14 @@
   </aside>
 
   <!-- Main content -->
-  <main class="main-content">
-    <header class="topbar">
+  <main [class.main-content]="isLoggedIn" [class.auth-content]="!isLoggedIn">
+    <header class="topbar" *ngIf="isLoggedIn">
       <button class="btn-menu d-lg-none" (click)="toggleSidebar()">
         <i class="bi bi-list"></i>
       </button>
       <div class="topbar-title">Darling Beauty</div>
     </header>
-    <div class="page-content">
+    <div [class.page-content]="isLoggedIn">
       <router-outlet></router-outlet>
     </div>
   </main>

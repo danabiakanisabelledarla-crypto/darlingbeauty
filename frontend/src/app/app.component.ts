@@ -14,20 +14,59 @@ export class AppComponent implements OnInit {
   isLoggedIn = false;
   sidebarOpen = false;
 
-  navItems = [
-    { label: 'Tableau de bord', icon: 'bi-speedometer2', route: '/dashboard' },
-    { label: 'Rendez-vous', icon: 'bi-calendar-check', route: '/appointments' },
-    { label: 'Clients', icon: 'bi-people', route: '/clients' },
-    { label: 'Services', icon: 'bi-scissors', route: '/services' },
-    { label: 'Produits', icon: 'bi-bag', route: '/products' },
-  ];
+
+  
+  adminNavItems = [
+  { label: 'Dashboard', icon: 'bi-speedometer2', route: '/dashboard' },
+  { label: 'Rendez-vous', icon: 'bi-calendar-check', route: '/appointments' },
+  { label: 'Clients', icon: 'bi-people', route: '/clients' },
+  { label: 'Services', icon: 'bi-scissors', route: '/services' },
+  { label: 'Produits', icon: 'bi-bag', route: '/products' }
+];
+
+clientNavItems = [
+  {
+    label: 'Accueil',
+    icon: 'bi-house',
+    route: '/client-dashboard'
+  },
+  {
+    label: 'Mes rendez-vous',
+    icon: 'bi-calendar-check',
+    route: '/client-dashboard/appointments'
+  },
+  {
+    label: 'Produits',
+    icon: 'bi-bag-heart',
+    route: '/client-dashboard/products'
+  },
+  {
+    label: 'Mes commandes',
+    icon: 'bi-cart-check',
+    route: '/client-dashboard/orders'
+  }
+];
+
+get navItems() {
+  return this.currentUser?.is_staff
+    ? this.adminNavItems
+    : this.clientNavItems;
+}
 
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
+    this.authService.isAuthenticated$.subscribe(isAuthenticated => {
+      this.isLoggedIn = isAuthenticated;
+      if (!isAuthenticated) this.sidebarOpen = false;
+    });
+
     this.authService.currentUser$.subscribe(user => {
       this.currentUser = user;
-      this.isLoggedIn = !!user;
+
+      console.log('Utilisateur connecté :');
+      console.log(user);
+      console.log('is_staff = ', user?.is_staff);
     });
 
     this.router.events.subscribe(event => {
@@ -37,6 +76,8 @@ export class AppComponent implements OnInit {
         this.sidebarOpen = false;
       }
     });
+
+    
   }
 
   logout(): void {
@@ -47,3 +88,4 @@ export class AppComponent implements OnInit {
     this.sidebarOpen = !this.sidebarOpen;
   }
 }
+

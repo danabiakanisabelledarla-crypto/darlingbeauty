@@ -5,9 +5,8 @@ import {
 } from '@angular/common/http';
 import { Observable, throwError, BehaviorSubject } from 'rxjs';
 import { catchError, filter, switchMap, take } from 'rxjs/operators';
-import { AuthService } from '../services/auth.service';
 import { environment } from '../../../environments/environment';
-import { Route, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -62,6 +61,12 @@ export class AuthInterceptor implements HttpInterceptor {
             })
           );
       }
+
+      this.isRefreshing = false;
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
+      this.router.navigate(['/auth/login']);
+      return throwError(() => new Error('Missing refresh token'));
     }
     return this.refreshTokenSubject.pipe(
       filter(token => token !== null),

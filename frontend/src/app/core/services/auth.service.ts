@@ -9,12 +9,16 @@ import { LoginRequest, RegisterRequest, TokenResponse, User } from '../models/au
 export class AuthService {
   private readonly API = environment.apiUrl + '/auth';
   private currentUserSubject = new BehaviorSubject<User | null>(null);
+  private authStateSubject = new BehaviorSubject<boolean>(this.hasStoredToken());
+
   currentUser$ = this.currentUserSubject.asObservable();
+  isAuthenticated$ = this.authStateSubject.asObservable();
 
   constructor(private http: HttpClient, private router: Router) {
     const token = this.getToken();
-    if (token) this.loadCurrentUser();
-     console.log('TOKEN = ', token);
+    if (token) {
+      this.loadCurrentUser().catch(() => this.clearSession());
+    }
   }
 
   login(data: LoginRequest): Observable<TokenResponse> {
@@ -22,7 +26,8 @@ export class AuthService {
       tap(res => {
         localStorage.setItem('access_token', res.access);
         localStorage.setItem('refresh_token', res.refresh);
-        this.loadCurrentUser();
+        this.authStateSubject.next(true);
+        this.loadCurrentUser().catch(() => this.clearSession());
       })
     );
   }
@@ -34,9 +39,7 @@ export class AuthService {
   logout(): void {
     const refresh = localStorage.getItem('refresh_token');
     this.http.post(`${this.API}/logout/`, { refresh }).subscribe();
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
-    this.currentUserSubject.next(null);
+    this.clearSession();
     this.router.navigate(['/auth/login']);
   }
 
@@ -63,6 +66,7 @@ export class AuthService {
 
   setToken(token: string): void {
     localStorage.setItem('access_token', token);
+    this.authStateSubject.next(true);
   }
 
   isLoggedIn(): boolean {
@@ -71,5 +75,16 @@ export class AuthService {
 
   getCurrentUser(): User | null {
     return this.currentUserSubject.value;
+  }
+
+  private hasStoredToken(): boolean {
+    return !!localStorage.getItem('access_token');
+  }
+
+  private clearSession(): void {
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
+    this.currentUserSubject.next(null);
+    this.authStateSubject.next(false);
   }
 }
