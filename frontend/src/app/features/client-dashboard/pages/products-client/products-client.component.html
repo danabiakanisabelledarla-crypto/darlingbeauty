@@ -1,1 +1,157 @@
-<h1>Catalogue produits</h1>
+<div class="products-page">
+
+  <!-- Succès commande -->
+  <div *ngIf="orderSuccess" class="success-banner">
+    <div class="success-card">
+      <i class="bi bi-bag-check-fill"></i>
+      <h2>Commande passée avec succès !</h2>
+      <p>Votre commande a été enregistrée. Vous pouvez suivre son état dans "Mes commandes".</p>
+      <div class="sc-actions">
+        <a routerLink="/client-dashboard/orders" class="btn-gold">
+          <i class="bi bi-truck"></i> Suivre ma commande
+        </a>
+        <button class="btn-outline" (click)="orderSuccess=false">
+          <i class="bi bi-bag-heart"></i> Continuer mes achats
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <ng-container *ngIf="!orderSuccess">
+
+    <!-- En-tête -->
+    <div class="page-header">
+      <a class="btn-back" routerLink="/client-dashboard"><i class="bi bi-arrow-left"></i></a>
+      <div>
+        <h1>Boutique</h1>
+        <p>{{ products.length }} produit(s) disponible(s)</p>
+      </div>
+      <button *ngIf="!showCartStep" class="cart-btn" (click)="showCartStep=true">
+        <i class="bi bi-cart3"></i>
+        <span *ngIf="cartCount > 0" class="cart-badge">{{ cartCount }}</span>
+        <span class="cart-total" *ngIf="cartTotal > 0">{{ cartTotal | number:'1.0-0' }} FCFA</span>
+      </button>
+      <button *ngIf="showCartStep" class="btn-back-cart" (click)="showCartStep=false">
+        <i class="bi bi-arrow-left"></i> Catalogue
+      </button>
+    </div>
+
+    <!-- ══ CATALOGUE ══ -->
+    <ng-container *ngIf="!showCartStep">
+
+      <div class="search-bar">
+        <i class="bi bi-search"></i>
+        <input type="text" [(ngModel)]="search" (input)="filterProducts()"
+               placeholder="Rechercher un produit, une marque…">
+        <button *ngIf="search" (click)="search=''; filterProducts()">
+          <i class="bi bi-x"></i>
+        </button>
+      </div>
+
+      <!-- Skeletons -->
+      <div *ngIf="loading" class="products-grid">
+        <div class="skeleton-card" *ngFor="let i of [1,2,3,4,5,6]"></div>
+      </div>
+
+      <!-- Vide -->
+      <div *ngIf="!loading && filtered.length === 0" class="empty-state">
+        <i class="bi bi-bag-x"></i>
+        <p>Aucun produit trouvé.</p>
+      </div>
+
+      <!-- Grille -->
+      <div *ngIf="!loading" class="products-grid">
+        <div class="product-card" *ngFor="let p of filtered">
+          <div class="product-img-placeholder">
+            <i class="bi bi-bag-heart"></i>
+          </div>
+          <div class="product-body">
+            <div class="product-marque" *ngIf="p.marque">{{ p.marque }}</div>
+            <div class="product-name">{{ p.nom }}</div>
+            <div *ngIf="p.description" class="product-desc">{{ p.description }}</div>
+            <div class="product-stock" [class.low]="p.stock <= (p.stock_minimum || 5)">
+              <i class="bi bi-box-seam"></i> {{ p.stock }} en stock
+            </div>
+            <div class="product-price">{{ p.prix_vente | number:'1.0-0' }} FCFA</div>
+
+            <!-- Contrôle quantité -->
+            <div class="qty-control" *ngIf="getQtyInCart(p.id!) === 0">
+              <button class="btn-add" (click)="addOne(p)" [disabled]="p.stock === 0">
+                <i class="bi bi-cart-plus"></i> Ajouter
+              </button>
+            </div>
+            <div class="qty-control active" *ngIf="getQtyInCart(p.id!) > 0">
+              <button (click)="removeOne(p)"><i class="bi bi-dash"></i></button>
+              <span>{{ getQtyInCart(p.id!) }}</span>
+              <button (click)="addOne(p)" [disabled]="getQtyInCart(p.id!) >= p.stock">
+                <i class="bi bi-plus"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA panier flottant -->
+      <div class="floating-cart" *ngIf="cartCount > 0 && !showCartStep">
+        <button (click)="showCartStep=true">
+          <i class="bi bi-cart-check"></i>
+          Voir le panier ({{ cartCount }}) — {{ cartTotal | number:'1.0-0' }} FCFA
+        </button>
+      </div>
+
+    </ng-container>
+
+    <!-- ══ PANIER ══ -->
+    <ng-container *ngIf="showCartStep">
+      <div class="cart-section">
+
+        <div *ngIf="cart.length === 0" class="empty-state">
+          <i class="bi bi-cart-x"></i>
+          <p>Votre panier est vide.</p>
+          <button class="btn-gold" (click)="showCartStep=false">
+            <i class="bi bi-bag-heart"></i> Voir les produits
+          </button>
+        </div>
+
+        <ng-container *ngIf="cart.length > 0">
+          <div class="cart-items">
+            <div class="cart-item" *ngFor="let item of cart">
+              <div class="ci-icon"><i class="bi bi-bag"></i></div>
+              <div class="ci-info">
+                <div class="ci-name">{{ item.nom }}</div>
+                <div class="ci-price">{{ item.prix | number:'1.0-0' }} FCFA × {{ item.quantite }}</div>
+              </div>
+              <div class="ci-subtotal">{{ item.prix * item.quantite | number:'1.0-0' }} FCFA</div>
+              <button class="ci-remove" (click)="removeFromCart(item.produit_id)">
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="cart-total-row">
+            <span>Total</span>
+            <strong>{{ cartTotal | number:'1.0-0' }} FCFA</strong>
+          </div>
+
+          <div class="form-group">
+            <label><i class="bi bi-geo-alt"></i> Adresse de livraison (optionnel)</label>
+            <input type="text" [(ngModel)]="adresseLivraison"
+                   placeholder="Votre adresse de livraison...">
+          </div>
+
+          <div *ngIf="orderError" class="alert-error">
+            <i class="bi bi-exclamation-triangle"></i> {{ orderError }}
+          </div>
+
+          <button class="btn-order" [disabled]="orderLoading" (click)="placeOrder()">
+            <span *ngIf="!orderLoading"><i class="bi bi-bag-check"></i> Passer la commande</span>
+            <span *ngIf="orderLoading"><i class="bi bi-hourglass-split spin"></i> Traitement...</span>
+          </button>
+        </ng-container>
+
+      </div>
+    </ng-container>
+
+  </ng-container>
+
+</div>

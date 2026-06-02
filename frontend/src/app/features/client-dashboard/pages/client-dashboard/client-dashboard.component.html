@@ -1,84 +1,60 @@
 <div class="client-dashboard">
 
+  <!-- Notifications -->
+  <div class="notifications-zone" *ngIf="notifications.length > 0">
+    <div class="notif-banner" *ngFor="let notif of notifications"
+         [class.positive]="notif.positive" [class.negative]="!notif.positive">
+      <i class="bi" [class.bi-check-circle-fill]="notif.positive" [class.bi-x-circle-fill]="!notif.positive"></i>
+      <span>{{ notif.message }}</span>
+      <button class="notif-close" (click)="dismiss(notif)"><i class="bi bi-x"></i></button>
+    </div>
+  </div>
+
   <div class="hero-section">
     <div class="overlay"></div>
-
     <div class="hero-content">
       <h1>Bienvenue chez Darling Beauty</h1>
-
-      <p>
-        Réservez vos prestations, consultez vos rendez-vous
-        et suivez vos commandes en toute simplicité.
-      </p>
-
+      <p>Réservez vos prestations, consultez vos rendez-vous et suivez vos commandes en toute simplicité.</p>
       <div class="action-buttons">
-<div class="action-buttons">
-
-  <button class="btn-primary"
-          routerLink="/client-dashboard/prendre-rdv">
-    <i class="bi bi-calendar-plus"></i>
-    Prendre un rendez-vous
-  </button>
-
-  <button class="btn-secondary"
-          routerLink="/client-dashboard/products-client">
-    <i class="bi bi-bag-heart"></i>
-    Voir les produits
-  </button>
-
-</div>
+        <button class="btn-primary" routerLink="/client-dashboard/prendre-rdv">
+          <i class="bi bi-calendar-plus"></i> Prendre un rendez-vous
+        </button>
+        <button class="btn-secondary" routerLink="/client-dashboard/products">
+          <i class="bi bi-bag-heart"></i> Voir les produits
+        </button>
       </div>
     </div>
   </div>
 
   <div class="cards-container">
 
-  <div class="info-card">
-    <div class="icon">
-      <i class="bi bi-calendar-check"></i>
-    </div>
+    <a class="info-card" routerLink="/client-dashboard/appointments">
+      <div class="icon"><i class="bi bi-calendar-check"></i></div>
+      <h3>Mes rendez-vous</h3>
+      <p>Consultez vos rendez-vous en attente, validés ou terminés.</p>
+      <span class="card-link">Voir <i class="bi bi-arrow-right"></i></span>
+    </a>
 
-    <h3>Mes rendez-vous</h3>
+    <a class="info-card" routerLink="/client-dashboard/prendre-rdv">
+      <div class="icon"><i class="bi bi-calendar-plus"></i></div>
+      <h3>Prendre un RDV</h3>
+      <p>Réservez une prestation en choisissant votre service et créneau.</p>
+      <span class="card-link">Réserver <i class="bi bi-arrow-right"></i></span>
+    </a>
 
-    <p>
-      Consultez vos rendez-vous en attente, validés ou terminés.
-    </p>
+    <a class="info-card" routerLink="/client-dashboard/products">
+      <div class="icon"><i class="bi bi-bag-heart"></i></div>
+      <h3>Boutique</h3>
+      <p>Parcourez les produits disponibles et passez commande.</p>
+      <span class="card-link">Commander <i class="bi bi-arrow-right"></i></span>
+    </a>
+
+    <a class="info-card" routerLink="/client-dashboard/orders">
+      <div class="icon"><i class="bi bi-truck"></i></div>
+      <h3>Mes commandes</h3>
+      <p>Suivez l'état de vos commandes en temps réel.</p>
+      <span class="card-link">Suivre <i class="bi bi-arrow-right"></i></span>
+    </a>
+
   </div>
-
-  <div class="info-card">
-    <div class="icon">
-      <i class="bi bi-stars"></i>
-    </div>
-
-    <h3>Nos services</h3>
-
-    <p>
-      Découvrez toutes les prestations proposées par Darling Beauty.
-    </p>
-  </div>
-
-  <div class="info-card">
-    <div class="icon">
-      <i class="bi bi-bag-heart"></i>
-    </div>
-
-    <h3>Boutique</h3>
-
-    <p>
-      Parcourez les produits disponibles et passez commande.
-    </p>
-  </div>
-
-  <div class="info-card">
-    <div class="icon">
-      <i class="bi bi-truck"></i>
-    </div>
-
-    <h3>Mes commandes</h3>
-
-    <p>
-      Suivez l'état de vos commandes en temps réel.
-    </p>
-  </div>
-
 </div>

@@ -1,1 +1,119 @@
-<h1>Mes commandes</h1>
+<div class="orders-page">
+
+  <div class="page-header">
+    <a class="btn-back" routerLink="/client-dashboard"><i class="bi bi-arrow-left"></i></a>
+    <div>
+      <h1>Mes commandes</h1>
+      <p>{{ orders.length }} commande(s)</p>
+    </div>
+    <a routerLink="/client-dashboard/products" class="btn-shop">
+      <i class="bi bi-bag-heart"></i> Boutique
+    </a>
+  </div>
+
+  <div *ngIf="cancelSuccess" class="toast-success">
+    <i class="bi bi-check-circle"></i> Commande annulée avec succès.
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="skeleton-list">
+    <div class="skeleton-card" *ngFor="let i of [1,2,3]"></div>
+  </div>
+
+  <!-- Erreur -->
+  <div *ngIf="!loading && errorMsg" class="alert-error">
+    <i class="bi bi-exclamation-triangle"></i> {{ errorMsg }}
+    <button (click)="load()">Réessayer</button>
+  </div>
+
+  <!-- Vide -->
+  <div *ngIf="!loading && !errorMsg && orders.length === 0" class="empty-state">
+    <i class="bi bi-bag-x"></i>
+    <p>Vous n'avez pas encore de commandes.</p>
+    <a routerLink="/client-dashboard/products" class="btn-gold">
+      <i class="bi bi-bag-heart"></i> Découvrir la boutique
+    </a>
+  </div>
+
+  <!-- Liste commandes -->
+  <div class="orders-list" *ngIf="!loading && !errorMsg">
+    <div class="order-card" *ngFor="let order of orders" [class.expanded]="expandedId === order.id">
+
+      <!-- En-tête commande -->
+      <div class="order-header" (click)="toggle(order.id!)">
+        <div class="oh-left">
+          <div class="order-id">#{{ order.id }}</div>
+          <div class="order-date">{{ order.date_creation | date:'dd/MM/yyyy à HH:mm' }}</div>
+        </div>
+        <div class="oh-right">
+          <span class="statut-badge" [ngStyle]="getStatutStyle(order.statut)">
+            {{ statutLabels[order.statut!] || order.statut }}
+          </span>
+          <div class="order-total">{{ order.total | number:'1.0-0' }} FCFA</div>
+          <i class="bi" [class.bi-chevron-down]="expandedId !== order.id"
+             [class.bi-chevron-up]="expandedId === order.id" style="color:#888"></i>
+        </div>
+      </div>
+
+      <!-- Barre de progression -->
+      <div class="progress-bar" *ngIf="order.statut !== 'annulee'">
+        <div class="step" *ngFor="let step of STEPS; let i = index"
+             [class.done]="getStepIndex(order.statut) >= i"
+             [class.current]="getStepIndex(order.statut) === i">
+          <div class="step-dot"></div>
+          <div class="step-label">{{ statutLabels[step] }}</div>
+        </div>
+        <div class="progress-line">
+          <div class="progress-fill"
+               [style.width.%]="getStepIndex(order.statut) >= 0 ? (getStepIndex(order.statut) / (STEPS.length - 1)) * 100 : 0">
+          </div>
+        </div>
+      </div>
+
+      <div class="cancelled-notice" *ngIf="order.statut === 'annulee'">
+        <i class="bi bi-x-circle"></i> Cette commande a été annulée.
+      </div>
+
+      <!-- Détails (accordéon) -->
+      <div class="order-details" *ngIf="expandedId === order.id">
+
+        <div class="detail-section">
+          <div class="ds-title"><i class="bi bi-bag"></i> Articles</div>
+          <div class="order-lines">
+            <div class="order-line" *ngFor="let line of order.lignes">
+              <span class="ol-name">{{ line.produit_nom || 'Produit #' + line.produit_id }}</span>
+              <span class="ol-qty">× {{ line.quantite }}</span>
+              <span class="ol-price">{{ line.sous_total | number:'1.0-0' }} FCFA</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="detail-section" *ngIf="order.adresse_livraison">
+          <div class="ds-title"><i class="bi bi-geo-alt"></i> Livraison</div>
+          <div class="ds-value">{{ order.adresse_livraison }}</div>
+        </div>
+
+        <div class="detail-section" *ngIf="order.notes">
+          <div class="ds-title"><i class="bi bi-chat-text"></i> Notes</div>
+          <div class="ds-value">{{ order.notes }}</div>
+        </div>
+
+        <div class="order-total-row">
+          <span>Total</span>
+          <strong>{{ order.total | number:'1.0-0' }} FCFA</strong>
+        </div>
+
+        <button *ngIf="canCancel(order)" class="btn-cancel"
+                [disabled]="cancellingId === order.id"
+                (click)="cancelOrder(order)">
+          <i class="bi bi-x-circle" *ngIf="cancellingId !== order.id"></i>
+          <i class="bi bi-hourglass-split spin" *ngIf="cancellingId === order.id"></i>
+          Annuler la commande
+        </button>
+
+      </div>
+
+    </div>
+  </div>
+
+</div>

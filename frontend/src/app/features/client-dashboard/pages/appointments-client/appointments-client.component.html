@@ -1,1 +1,99 @@
-<h1>Mes rendez-vous</h1>
+<div class="appts-page">
+
+  <div class="page-header">
+    <a class="btn-back" routerLink="/client-dashboard">
+      <i class="bi bi-arrow-left"></i>
+    </a>
+    <div>
+      <h1>Mes rendez-vous</h1>
+      <p>{{ allRdv.length }} rendez-vous au total</p>
+    </div>
+    <a class="btn-new" routerLink="/client-dashboard/prendre-rdv">
+      <i class="bi bi-calendar-plus"></i> Nouveau
+    </a>
+  </div>
+
+  <!-- Notification annulation -->
+  <div *ngIf="cancelSuccess" class="toast-success">
+    <i class="bi bi-check-circle"></i> Rendez-vous annulé avec succès.
+  </div>
+
+  <!-- Filtres -->
+  <div class="filters-bar">
+    <button *ngFor="let f of filters"
+            [class.active]="activeFilter === f.key"
+            (click)="setFilter(f.key)">
+      {{ f.label }}
+      <span class="badge-count" *ngIf="countByStatut(f.key) > 0">{{ countByStatut(f.key) }}</span>
+    </button>
+  </div>
+
+  <!-- Chargement -->
+  <div *ngIf="loading" class="skeleton-list">
+    <div class="skeleton-card" *ngFor="let i of [1,2,3]"></div>
+  </div>
+
+  <!-- Erreur -->
+  <div *ngIf="!loading && errorMsg" class="alert-error">
+    <i class="bi bi-exclamation-triangle"></i> {{ errorMsg }}
+    <button (click)="load()">Réessayer</button>
+  </div>
+
+  <!-- Vide -->
+  <div *ngIf="!loading && !errorMsg && filteredRdv.length === 0" class="empty-state">
+    <i class="bi bi-calendar-x"></i>
+    <p *ngIf="activeFilter === 'all'">Vous n'avez pas encore de rendez-vous.</p>
+    <p *ngIf="activeFilter !== 'all'">Aucun rendez-vous dans cette catégorie.</p>
+    <a routerLink="/client-dashboard/prendre-rdv" class="btn-gold">
+      <i class="bi bi-calendar-plus"></i> Prendre un rendez-vous
+    </a>
+  </div>
+
+  <!-- Liste -->
+  <div class="rdv-list" *ngIf="!loading && !errorMsg">
+    <div class="rdv-card" *ngFor="let rdv of filteredRdv">
+
+      <div class="rdv-top">
+        <div class="rdv-service">{{ rdv.service_nom || 'Service #' + rdv.service }}</div>
+        <span class="badge" [ngClass]="getStatutClass(rdv.statut)">
+          {{ statutLabels[rdv.statut!] || rdv.statut }}
+        </span>
+      </div>
+
+      <div class="rdv-meta">
+        <span><i class="bi bi-calendar3"></i>
+          {{ rdv.date_heure | date:'EEEE d MMMM yyyy':'':'fr' }}
+        </span>
+        <span><i class="bi bi-clock"></i>
+          {{ rdv.date_heure | date:'HH:mm' }}
+        </span>
+        <span *ngIf="rdv.service_duree">
+          <i class="bi bi-hourglass"></i> {{ rdv.service_duree }} min
+        </span>
+        <span *ngIf="rdv.prix_applique">
+          <i class="bi bi-tag"></i> {{ rdv.prix_applique | number:'1.0-0' }} FCFA
+        </span>
+      </div>
+
+      <div *ngIf="rdv.notes" class="rdv-notes">
+        <i class="bi bi-chat-text"></i> {{ rdv.notes }}
+      </div>
+
+      <div class="rdv-footer">
+        <span class="rdv-date-creation">
+          Créé le {{ rdv.date_creation | date:'dd/MM/yyyy' }}
+        </span>
+        <button *ngIf="canCancel(rdv)"
+                class="btn-cancel"
+                [disabled]="cancellingId === rdv.id"
+                (click)="cancelRdv(rdv)">
+          <i class="bi bi-x-circle" *ngIf="cancellingId !== rdv.id"></i>
+          <i class="bi bi-hourglass-split spin" *ngIf="cancellingId === rdv.id"></i>
+          Annuler
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</div>

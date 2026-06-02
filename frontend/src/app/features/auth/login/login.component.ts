@@ -50,7 +50,7 @@ export class LoginComponent implements OnInit {
     this.authService.login(this.form.value).subscribe({
       next: () =>  { setTimeout(() => {
         const user = this.authService.getCurrentUser();
-        console.log('Utilisateur connecté :', user);
+        //console.log('Utilisateur connecté :', user);
         if (user?.is_staff) {
           this.router.navigate(['/dashboard']);
         } else {

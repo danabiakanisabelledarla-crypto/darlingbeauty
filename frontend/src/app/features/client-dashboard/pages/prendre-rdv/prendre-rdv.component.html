@@ -1,1 +1,95 @@
-<p>prendre-rdv works!</p>
+<div class="rdv-page">
+
+  <!-- Header -->
+  <div class="page-header">
+    <a class="btn-back" routerLink="/client-dashboard">
+      <i class="bi bi-arrow-left"></i>
+    </a>
+    <div>
+      <h1>Prendre un rendez-vous</h1>
+      <p>Choisissez un service et une date qui vous convient</p>
+    </div>
+  </div>
+
+  <!-- Succès -->
+  <div *ngIf="success" class="success-card">
+    <div class="success-icon"><i class="bi bi-check-circle-fill"></i></div>
+    <h2>Rendez-vous confirmé !</h2>
+    <p>Votre demande a bien été enregistrée. Vous serez contacté(e) pour confirmation.</p>
+    <div class="success-actions">
+      <button class="btn-gold" (click)="goToAppointments()">
+        <i class="bi bi-calendar-check"></i> Voir mes rendez-vous
+      </button>
+      <button class="btn-outline" (click)="success=false; form.reset()">
+        <i class="bi bi-plus-circle"></i> Nouveau rendez-vous
+      </button>
+    </div>
+  </div>
+
+  <!-- Formulaire -->
+  <div *ngIf="!success" class="form-card">
+
+    <div *ngIf="errorMsg" class="alert-error">
+      <i class="bi bi-exclamation-triangle"></i> {{ errorMsg }}
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+      <!-- Choix du service -->
+      <div class="form-group">
+        <label><i class="bi bi-scissors"></i> Service *</label>
+        <div *ngIf="loadingServices" class="loading-line"></div>
+        <select *ngIf="!loadingServices" formControlName="service"
+                [class.invalid]="form.get('service')!.invalid && form.get('service')!.touched">
+          <option value="">-- Choisissez un service --</option>
+          <option *ngFor="let s of services" [value]="s.id">
+            {{ s.nom }} — {{ s.duree_minutes }} min — {{ s.prix | number:'1.0-0' }} FCFA
+          </option>
+        </select>
+        <span class="err" *ngIf="form.get('service')!.invalid && form.get('service')!.touched">
+          Veuillez sélectionner un service
+        </span>
+      </div>
+
+      <!-- Aperçu service sélectionné -->
+      <div *ngIf="selectedService" class="service-preview">
+        <div class="sp-info">
+          <i class="bi bi-stars sp-icon"></i>
+          <div>
+            <div class="sp-name">{{ selectedService.nom }}</div>
+            <div class="sp-details">
+              <span><i class="bi bi-clock"></i> {{ selectedService.duree_minutes }} min</span>
+              <span><i class="bi bi-tag"></i> {{ selectedService.prix | number:'1.0-0' }} FCFA</span>
+            </div>
+            <div *ngIf="selectedService.description" class="sp-desc">{{ selectedService.description }}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Date et heure -->
+      <div class="form-group">
+        <label><i class="bi bi-calendar-event"></i> Date et heure *</label>
+        <input type="datetime-local" formControlName="date_heure"
+               [min]="minDate"
+               [class.invalid]="form.get('date_heure')!.invalid && form.get('date_heure')!.touched">
+        <span class="err" *ngIf="form.get('date_heure')!.invalid && form.get('date_heure')!.touched">
+          Veuillez choisir une date et heure
+        </span>
+      </div>
+
+      <!-- Notes -->
+      <div class="form-group">
+        <label><i class="bi bi-chat-text"></i> Notes / Précisions</label>
+        <textarea formControlName="notes" rows="3"
+                  placeholder="Précisez vos besoins, attentes ou informations utiles..."></textarea>
+      </div>
+
+      <button type="submit" class="btn-submit" [disabled]="loading">
+        <span *ngIf="!loading"><i class="bi bi-calendar-plus"></i> Confirmer le rendez-vous</span>
+        <span *ngIf="loading"><i class="bi bi-hourglass-split spin"></i> Envoi en cours...</span>
+      </button>
+
+    </form>
+  </div>
+
+</div>

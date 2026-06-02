@@ -1,0 +1,204 @@
+$gold: #d4af37;
+$gold-light: rgba(212,175,55,.12);
+$card-bg: #111;
+$border: rgba(212,175,55,.22);
+$text-muted: #888;
+
+.products-page { max-width: 900px; margin: 0 auto; padding: 24px 16px 100px; }
+
+.page-header {
+  display: flex; align-items: center; gap: 14px; margin-bottom: 24px;
+  h1 { margin: 0; font-size: 1.6rem; color: #fff; }
+  p  { margin: 4px 0 0; color: $text-muted; font-size: .9rem; }
+  .cart-total { font-size: .8rem; font-weight: 600; }
+}
+
+.btn-back, .btn-back-cart {
+  width: 38px; height: 38px;
+  display: grid; place-items: center;
+  border-radius: 50%; border: 1px solid $border;
+  color: $gold; text-decoration: none; background: transparent; cursor: pointer;
+  &:hover { background: $gold-light; }
+}
+.btn-back-cart { width: auto; padding: 0 14px; border-radius: 20px; gap: 6px; display: flex; align-items: center; font-size: .9rem; }
+
+.cart-btn {
+  margin-left: auto;
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 16px; background: $gold-light; border: 1px solid $border;
+  border-radius: 20px; color: $gold; cursor: pointer; font-size: .9rem;
+  position: relative;
+  &:hover { background: rgba(212,175,55,.22); }
+}
+.cart-badge {
+  position: absolute; top: -6px; right: -6px;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: $gold; color: #000; font-size: .7rem;
+  font-weight: 700; display: grid; place-items: center;
+}
+
+/* ── Recherche ── */
+.search-bar {
+  display: flex; align-items: center; gap: 10px;
+  background: #1a1a1a; border: 1px solid $border; border-radius: 10px;
+  padding: 10px 16px; margin-bottom: 24px;
+  i { color: $gold; }
+  input { flex: 1; background: none; border: none; color: #fff; font-size: .95rem; outline: none; &::placeholder { color: #555; } }
+  button { background: none; border: none; color: #555; cursor: pointer; &:hover { color: $gold; } }
+}
+
+/* ── Grille produits ── */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.skeleton-card {
+  height: 280px; border-radius: 14px;
+  background: linear-gradient(90deg, #1a1a1a 25%, #222 50%, #1a1a1a 75%);
+  background-size: 200%; animation: shimmer 1.2s infinite;
+}
+
+.product-card {
+  background: $card-bg; border: 1px solid $border; border-radius: 14px; overflow: hidden;
+  transition: border-color .2s, transform .2s;
+  &:hover { border-color: rgba(212,175,55,.5); transform: translateY(-2px); }
+}
+
+.product-img-placeholder {
+  height: 120px; background: $gold-light;
+  display: grid; place-items: center;
+  i { font-size: 3rem; color: $gold; opacity: .5; }
+}
+
+.product-body { padding: 14px 16px; }
+.product-marque { color: $gold; font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+.product-name { color: #fff; font-weight: 600; margin-bottom: 6px; }
+.product-desc { color: $text-muted; font-size: .83rem; margin-bottom: 8px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.product-stock { color: $text-muted; font-size: .8rem; margin-bottom: 8px; i { margin-right: 4px; } &.low { color: #e67e22; } }
+.product-price { color: $gold; font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; }
+
+/* ── Qty control ── */
+.qty-control {
+  .btn-add {
+    width: 100%; padding: 8px; background: $gold; color: #000;
+    border: none; border-radius: 8px; font-weight: 700; cursor: pointer;
+    i { margin-right: 6px; }
+    &:disabled { opacity: .4; cursor: not-allowed; }
+    &:hover:not(:disabled) { opacity: .85; }
+  }
+  &.active {
+    display: flex; align-items: center; justify-content: space-between;
+    background: $gold-light; border: 1px solid $border; border-radius: 8px;
+    padding: 4px;
+    button {
+      width: 32px; height: 32px; background: $gold; border: none;
+      border-radius: 6px; color: #000; font-size: 1rem; cursor: pointer;
+      display: grid; place-items: center;
+      &:disabled { opacity: .4; cursor: not-allowed; }
+    }
+    span { color: #fff; font-weight: 700; font-size: 1rem; }
+  }
+}
+
+/* ── Panier flottant ── */
+.floating-cart {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  z-index: 100;
+  button {
+    padding: 14px 28px; background: $gold; color: #000;
+    border: none; border-radius: 30px; font-weight: 700; font-size: 1rem;
+    cursor: pointer; box-shadow: 0 8px 30px rgba(212,175,55,.3);
+    i { margin-right: 8px; }
+    &:hover { opacity: .9; }
+  }
+}
+
+/* ── Panier ── */
+.cart-section { max-width: 560px; margin: 0 auto; }
+
+.cart-items { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+
+.cart-item {
+  background: $card-bg; border: 1px solid $border; border-radius: 12px;
+  padding: 14px 16px; display: flex; align-items: center; gap: 12px;
+  .ci-icon { font-size: 1.5rem; color: $gold; }
+  .ci-info { flex: 1; }
+  .ci-name { color: #fff; font-weight: 600; margin-bottom: 4px; }
+  .ci-price { color: $text-muted; font-size: .85rem; }
+  .ci-subtotal { color: $gold; font-weight: 700; white-space: nowrap; }
+  .ci-remove { background: transparent; border: none; color: #e74c3c; cursor: pointer; padding: 4px 8px; &:hover { opacity: .7; } }
+}
+
+.cart-total-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 16px 20px; background: $gold-light; border: 1px solid $border;
+  border-radius: 10px; margin-bottom: 20px;
+  span { color: $text-muted; }
+  strong { color: $gold; font-size: 1.2rem; }
+}
+
+.form-group {
+  margin-bottom: 20px;
+  label { display: block; color: $gold; font-size: .85rem; font-weight: 600; margin-bottom: 8px; i { margin-right: 6px; } }
+  input {
+    width: 100%; background: #1a1a1a; border: 1px solid $border;
+    border-radius: 8px; color: #fff; padding: 12px 14px;
+    font-size: .95rem; outline: none; box-sizing: border-box;
+    &:focus { border-color: $gold; }
+  }
+}
+
+.alert-error {
+  background: rgba(231,76,60,.1); border: 1px solid rgba(231,76,60,.3);
+  border-radius: 8px; color: #e74c3c; padding: 12px 16px; margin-bottom: 16px; font-size: .9rem;
+}
+
+.btn-order {
+  width: 100%; padding: 14px; background: $gold; color: #000;
+  border: none; border-radius: 10px; font-size: 1rem; font-weight: 700;
+  cursor: pointer;
+  &:disabled { opacity: .5; cursor: not-allowed; }
+  &:hover:not(:disabled) { opacity: .88; }
+  i { margin-right: 8px; }
+}
+
+/* ── Succès ── */
+.success-banner {
+  display: flex; justify-content: center; align-items: center;
+  padding: 40px 16px;
+}
+.success-card {
+  background: $card-bg; border: 1px solid #27ae6066; border-radius: 16px;
+  padding: 48px 32px; text-align: center; max-width: 480px;
+  i { font-size: 3.5rem; color: #27ae60; }
+  h2 { color: #fff; margin: 16px 0 8px; }
+  p  { color: $text-muted; margin-bottom: 28px; }
+  .sc-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+}
+
+.btn-gold {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 24px; background: $gold; color: #000;
+  border-radius: 8px; font-weight: 700; text-decoration: none; border: none; cursor: pointer;
+}
+.btn-outline {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 24px; background: transparent; color: $gold;
+  border: 1px solid $gold; border-radius: 8px; font-weight: 600; cursor: pointer;
+  &:hover { background: $gold-light; }
+}
+
+.empty-state {
+  text-align: center; padding: 60px 20px; color: $text-muted;
+  i { font-size: 3rem; color: $border; display: block; margin-bottom: 12px; }
+  p { margin-bottom: 20px; }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+.spin { display: inline-block; animation: spin .7s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }

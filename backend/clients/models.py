@@ -10,6 +10,7 @@ class Client(models.Model):
     ]
 
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='clients')
+    user = models.OneToOneField(User, on_delete=models.SET_NULL, null=True, blank=True,related_name='fiche_client',help_text="Compte utilisateur lié (si le client a un accès)")
     nom = models.CharField(max_length=100)
     prenom = models.CharField(max_length=100)
     email = models.EmailField(blank=True, null=True)

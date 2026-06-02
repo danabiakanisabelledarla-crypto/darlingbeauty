@@ -64,9 +64,9 @@ get navItems() {
     this.authService.currentUser$.subscribe(user => {
       this.currentUser = user;
 
-      console.log('Utilisateur connecté :');
-      console.log(user);
-      console.log('is_staff = ', user?.is_staff);
+      //console.log('Utilisateur connecté :');
+      //console.log(user);
+      //console.log('is_staff = ', user?.is_staff);
     });
 
     this.router.events.subscribe(event => {
