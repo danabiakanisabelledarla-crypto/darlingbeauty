@@ -111,6 +111,6 @@ SIMPLE_JWT = {
 # CORS Configuration
 CORS_ALLOWED_ORIGINS = config(
     'CORS_ALLOWED_ORIGINS',
-    default='http://localhost:4200,https://darlingbeauty-7ycs.vercel.app'
+    default='https://darlingbeauty-7ycs.vercel.app'
 ).split(',')
 CORS_ALLOW_CREDENTIALS = True
